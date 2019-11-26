@@ -1,6 +1,9 @@
+import 'package:fireapp/main.dart';
 import 'package:fireapp/model/firebase_util.dart';
+import 'package:fireapp/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fireapp/model/job.dart';
 
 class JobListScreen extends StatefulWidget {
   @override
@@ -45,34 +48,71 @@ class _JobListScreenState extends State<JobListScreen> {
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                      elevation: 1.5,
-                      child: Container(
-                        padding: EdgeInsets.all(10.0),
-                        constraints: BoxConstraints.expand(height: 150.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                             Text(
-                                "${snapshot.data[index].jobTitle}",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w400),
+                  return GestureDetector(
+                    onTap: () =>onTapCard(context, snapshot.data[index]) ,
+                    child: Card(
+                        elevation: 2.5,
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          constraints: BoxConstraints.expand(height: 170.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "${snapshot.data[index].jobTitle}",
+                                        style: TextStyle(
+                                          color: MidnightBlue,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Text("${snapshot.data[index].industry}"),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            SizedBox(height: 10.0,),
-                            Text("${snapshot.data[index].description}", overflow: TextOverflow.ellipsis,),
-                            SizedBox(height: 10.0,),
-                            Text("${snapshot.data[index].city} | Salary : ${snapshot.data[index].salary}", overflow: TextOverflow.ellipsis,),
-                            SizedBox(height: 10.0,),
-                            Text("Experience : ${snapshot.data[index].experience}", overflow: TextOverflow.ellipsis,),
-                          ],
-                        ),
-                      ));
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.location_city),
+                                  Text("${snapshot.data[index].city}")
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.attach_money),
+                                  Text(
+                                    "${snapshot.data[index].salary}",
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                  );
                 },
               );
         }
       },
     );
+  }
+
+  void onTapCard(BuildContext context, Job job) {
+    Navigator.pushNamed(context, JobDetailsRoute,
+        arguments: {"job_detail": job});
   }
 }
