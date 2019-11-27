@@ -1,71 +1,23 @@
 import 'package:fireapp/main.dart';
 import 'package:fireapp/model/firebase_util.dart';
+import 'package:fireapp/model/job.dart';
 import 'package:fireapp/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:fireapp/model/job.dart';
 
-
-class JobListScreen extends StatefulWidget {
+class TabDetails extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _JobListScreenState();
+    return _TabDetailState();
   }
 }
 
-class _JobListScreenState extends State<JobListScreen> {
+class _TabDetailState extends State<TabDetails> {
+  String filter;
   final databaseReference = FirebaseDatabase.instance.reference();
-  TextEditingController controller = new TextEditingController();
-  String  filter;
-
-  @override
-  void initState() {
-    super.initState();
-    controller.addListener(() {
-      setState(() {
-        filter = controller.text;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  style: TextStyle(color: Colors.white, fontFamily: Poppins),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search,color: Colors.blueGrey,),
-                    hintText: "Search job here ..",
-                    hintStyle:
-                        TextStyle(color: Colors.blueGrey, fontFamily: Poppins),
-                  ),
-                ),
-              ),
-            
-            ],
-          ),
-           
-        ),
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  child: listBuilder(),
-                ),
-              )
-            ],
-          ),
-        ));
+    return listBuilder();
   }
 
   Widget listBuilder() {
@@ -84,7 +36,11 @@ class _JobListScreenState extends State<JobListScreen> {
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return filter == null || filter == "" ? _card(snapshot, index) : snapshot.data[index].jobTitle.contains(filter) ? _card(snapshot, index) : Container() ;
+                  return filter == null || filter == ""
+                      ? _card(snapshot, index)
+                      : snapshot.data[index].jobTitle.contains(filter)
+                          ? _card(snapshot, index)
+                          : Container();
                 },
               );
         }
@@ -161,7 +117,8 @@ class _JobListScreenState extends State<JobListScreen> {
                   ),
                   FlatButton(
                     onPressed: () => onTapCard(context, snapshot.data[index]),
-                    child: Text("Apply Now", style: TextStyle(color: Colors.white)),
+                    child: Text("Apply Now",
+                        style: TextStyle(color: Colors.white)),
                     color: MidnightBlue,
                   )
                 ],
@@ -175,6 +132,4 @@ class _JobListScreenState extends State<JobListScreen> {
     Navigator.pushNamed(context, JobDetailsRoute,
         arguments: {"job_detail": job});
   }
-
- 
 }

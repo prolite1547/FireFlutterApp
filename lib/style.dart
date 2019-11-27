@@ -59,6 +59,13 @@ const HeaderTextStyle1 = TextStyle(
   fontWeight: FontWeight.w700
 );
 
+const HeaderBlacKTextStyle = TextStyle(
+  color : Colors.black,
+  fontFamily: Poppins,
+  fontSize:  MediumFontSize,
+  fontWeight: FontWeight.w700
+);
+
 const SubheaderTextStyle = TextStyle(
   color: Sunflower,
   fontFamily: Questrial,
@@ -67,9 +74,9 @@ const SubheaderTextStyle = TextStyle(
 );
 
 const DescriptionTextStyle = TextStyle(
-  fontFamily: Questrial,
-  fontSize: MediumFontSize,
-  fontWeight: FontWeight.w400
+  fontFamily: Poppins,
+  fontSize: RegularFontSize,
+  fontWeight: FontWeight.w600
 );
 
 

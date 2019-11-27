@@ -1,9 +1,13 @@
+import 'package:fireapp/model/cme_services.dart';
 import 'package:fireapp/screens/job_details_screen.dart';
 import 'package:fireapp/screens/job_list_screen.dart';
 import 'package:fireapp/style.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main(){ 
+  setupLocator();
+  runApp(MyApp());
+  }
 
 const JobListRoute = "/";
 const JobDetailsRoute = "/job_details_screen";
