@@ -6,15 +6,40 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class TabDetails extends StatefulWidget {
+  final TextEditingController txtController;
+  final String category;
+  TabDetails({this.txtController, this.category});
   @override
   State<StatefulWidget> createState() {
-    return _TabDetailState();
+    return _TabDetailState(txtController: txtController, category: category);
   }
 }
 
 class _TabDetailState extends State<TabDetails> {
-  String filter;
   final databaseReference = FirebaseDatabase.instance.reference();
+  TextEditingController txtController;
+  String category;
+  String filter;
+  _TabDetailState({this.txtController, this.category});
+
+  @override
+  void initState() {
+    super.initState();
+
+    txtController.addListener(() {
+      if (this.mounted) {
+        setState(() {
+          filter = txtController.text;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return listBuilder();
@@ -36,11 +61,40 @@ class _TabDetailState extends State<TabDetails> {
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return filter == null || filter == ""
-                      ? _card(snapshot, index)
-                      : snapshot.data[index].jobTitle.contains(filter)
-                          ? _card(snapshot, index)
-                          : Container();
+                  Widget card;
+                  if (filter == null || filter == "") {
+                    if (category == "all") {
+                      card = _card(snapshot, index);
+                    } else { 
+                      if(category == snapshot.data[index].industry.toString().trim().toLowerCase()) {
+                          card = _card(snapshot, index);
+                      }else{
+                          card = Container();
+                      }
+                    }
+                  } else {
+                    if (category == "all") {
+                      if (snapshot.data[index].jobTitle.contains(filter)) {
+                        card = _card(snapshot, index);
+                      } else {
+                        card = Container();
+                      }
+                    } else {
+                      if (snapshot.data[index].jobTitle.contains(filter) &&
+                          category == snapshot.data[index].industry.toString().trim().toLowerCase()) {
+                        card = _card(snapshot, index);
+                      } else {
+                        card = Container();
+                      }
+                    }
+                  }
+                  return card;
+
+                  // return filter == null || filter == ""
+                  //     ? _card(snapshot, index)
+                  //     : snapshot.data[index].jobTitle.contains(filter)
+                  //         ? _card(snapshot, index)
+                  //         : Container();
                 },
               );
         }
@@ -127,9 +181,11 @@ class _TabDetailState extends State<TabDetails> {
           ),
         ));
   }
+  
 
   void onTapCard(BuildContext context, Job job) {
     Navigator.pushNamed(context, JobDetailsRoute,
         arguments: {"job_detail": job});
   }
+  
 }
