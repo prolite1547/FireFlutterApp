@@ -79,6 +79,13 @@ const DescriptionTextStyle = TextStyle(
   fontWeight: FontWeight.w600
 );
 
+const DrawerLabelTextStyle = TextStyle(
+  fontFamily: Poppins,
+  fontSize: MediumFontSize,
+  fontWeight: FontWeight.w600,
+  color: Colors.black
+);
+
 
 
 

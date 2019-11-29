@@ -6,7 +6,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fireapp/model/job.dart';
 
-
 class JobListScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -32,6 +31,37 @@ class _JobListScreenState extends State<JobListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Jobs Corner', style: HeaderTextStyle1,)
+                  ],
+                ),
+                decoration: BoxDecoration(color: MidnightBlue),
+              ),
+              ListTile(
+                title: Text('Job Categories', style: DrawerLabelTextStyle,),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, JobCategoryRoute);
+                },
+              ),
+              ListTile(
+                title: Text('Item 2'),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -41,34 +71,37 @@ class _JobListScreenState extends State<JobListScreen> {
                   controller: controller,
                   style: TextStyle(color: Colors.white, fontFamily: Poppins),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search,color: Colors.blueGrey,),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.blueGrey,
+                    ),
                     hintText: "Search job here ..",
                     hintStyle:
                         TextStyle(color: Colors.blueGrey, fontFamily: Poppins),
                   ),
                 ),
               ),
-            
             ],
           ),
-           
         ),
         body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: TabSection(textEditController: controller,)
-           
-          // Column(
-          //   children: <Widget>[
-          //     Expanded(
-          //       child: Container(
-          //         child: listBuilder(),
-          //       ),
-          //     )
-          //   ],
-          // ),
-        ));
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: TabSection(
+              textEditController: controller,
+            )
+
+            // Column(
+            //   children: <Widget>[
+            //     Expanded(
+            //       child: Container(
+            //         child: listBuilder(),
+            //       ),
+            //     )
+            //   ],
+            // ),
+            ));
   }
 
   // Widget listBuilder() {
@@ -179,5 +212,4 @@ class _JobListScreenState extends State<JobListScreen> {
   //       arguments: {"job_detail": job});
   // }
 
- 
 }

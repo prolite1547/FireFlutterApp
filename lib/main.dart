@@ -1,4 +1,5 @@
 import 'package:fireapp/model/cme_services.dart';
+import 'package:fireapp/screens/job_category_screen.dart';
 import 'package:fireapp/screens/job_details_screen.dart';
 import 'package:fireapp/screens/job_list_screen.dart';
 import 'package:fireapp/style.dart';
@@ -11,6 +12,8 @@ void main(){
 
 const JobListRoute = "/";
 const JobDetailsRoute = "/job_details_screen";
+const JobCategoryRoute = "/job_category_screen";
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: MidnightBlue,
       ),
-      home: JobListScreen() ,
+     
     );
   }
 
@@ -37,6 +40,9 @@ class MyApp extends StatelessWidget {
               break;
               case JobDetailsRoute:
                 screen = JobDetailsScreen(job: arguments["job_detail"],);
+              break;
+              case JobCategoryRoute:
+                screen = JobCategoryScreen();
               break;
               default:
                 return null;

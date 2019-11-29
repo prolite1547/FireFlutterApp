@@ -1,8 +1,84 @@
+import 'package:flutter/material.dart';
+import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 
+class Category{
+  final String name;
+  final String value;
+  
+  Category({this.name, this.value});
+
+  static List<Category> fetchAll(){
+    return [
+      // Category(name: "All", value: "All"),
+      Category(name: "Advertising", value: "Advertising"),
+      Category(name: "Agriculture", value: "Agriculture"),
+      Category(name: "Airlines", value:"Airlines"),
+      Category(name: "Automobile", value:"Automobile"),
+      Category(name: "Banking", value: "Banking"),
+      Category(name: "Beauty", value: "Beauty/Fitness"),
+      Category(name: "Bio Technology", value: "Bio Technology"),
+      Category(name: "Cement", value: "Cement"),
+      Category(name: "Chemicals", value: "Chemicals",),
+      Category(name: "Construction", value: "Construction"),
+      Category(name: "Consultancy", value: "Consultancy"),
+      Category(name: "Consumer Goods", value: "Consumer Goods"),
+      Category(name: "Courier", value: "Courier/Freight"),
+      Category(name: "Dairy", value: "Dairy"),
+      Category(name: "Education", value: "Education"),
+      Category(name: "Electrical", value: "Electrical"),
+      Category(name: "Engineering", value: "Engineering"),
+      Category(name: "Entertainment", value: "Entertainment"),
+      Category(name: "Facility Management", value: "Facility Management"),
+      Category(name: "Fertilizer/Pesticides", value: "Fertilizer/Pesticides"),
+      Category(name: "Financial Services", value: "Financial Services"),
+      Category(name: "Food & Packaged Food", value: "Food & Packaged Food"),
+      Category(name: "Government", value: "Government/Defence"),
+      Category(name: "Health Care", value: "Health Care"),
+      Category(name: "Home Appliances", value: "Home Appliances"),
+      Category(name: "Hospitals", value: "Hospitals"),
+      Category(name: "Hotels/Restaurant", value: "Hotels/Restaurant"),
+      Category(name: "Import/Export", value: "Import/Export"),
+      Category(name: "Insurance", value: "Insurance"),
+      Category(name: "Iron/Steel", value: "Iron/Steel"),
+      Category(name: "IT Hardware", value: "IT/Computers - Hardware"),
+      Category(name: "IT Software", value: "IT/Computers - Software"),
+      Category(name: "Gold/Jewellery", value:  "Gold/Jewellery"),
+      Category(name: "Leather", value:  "Leather"),
+      Category(name:  "Machinery Equipment", value:  "Machinery/Equipment Mfg."),
+      Category(name:  "Market Research", value: "Market Research"),
+      Category(name:  "Media", value: "Media"),
+      Category(name:  "Medical Equipments", value: "Medical Equipments Mfg."),
+      Category(name:  "Office Equipment", value: "Office Equipment"),
+      Category(name:  "Oil/Gas/Petroleum", value: "Oil/Gas/Petroleum"),
+      Category(name:  "Paints", value: "Paints"),
+      Category(name:  "Papers", value: "Papers"),
+      Category(name:  "Personal Care/SPA", value: "Personal Care/SPA"),
+      Category(name:  "Pharmaceuticals", value: "Pharmaceuticals"),
+      Category(name:  "Plastic", value: "Plastic"),
+      Category(name:  "Printing/Packaging", value: "Printing/Packaging"),
+      Category(name:  "Public Relations", value: "Public Relations"),
+      Category(name:  "Publishing", value: "Publishing"),
+      Category(name:  "Real Estate", value: "Real Estate"),
+      Category(name:  "Retailing", value: "Retailing"),
+      Category(name:  "Rubber", value: "Rubber"),
+      Category(name:  "Shipping", value:"Shipping"),
+      Category(name:  "Telecom", value:"Telecom"),
+      Category(name:  "Textiles", value:"Textiles"),
+      Category(name:  "Transportation", value:"Transportation"),
+      Category(name:  "Travel/Tourism", value:"Travel/Tourism"),
+      Category(name:  "Tyres", value:"Tyres"),
+      Category(name:  "Web Development", value:  "IT/Computers - Web Development"),
+      Category(name:  "Wood", value:"Wood"),
+      Category(name:  "Other", value:"Other"),
+    ];
+  }
+
+}
+    
 
  const List<String> getCategories = [
         "All",
-        "Advertise",
+        "Advertising",
         "Agriculture",
         "Airlines"
         "Automobile",
@@ -42,6 +118,7 @@
         "Media",
         "Medical Equipments",
         "Office Equipment",
+        "Oil/Gas/Petroleum",
         "Paints",
         "Paper",
         "Personal Care/SPA",
@@ -106,6 +183,7 @@ const List<String> getCategoryValue = [
         "Media",
         "Medical Equipments Mfg.",
         "Office Equipment",
+        "Oil/Gas/Petroleum",
         "Paints",
         "Papers",
         "Personal Care/SPA",
