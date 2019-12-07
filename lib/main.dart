@@ -1,4 +1,5 @@
 import 'package:fireapp/model/cme_services.dart';
+import 'package:fireapp/model/notif.dart';
 import 'package:fireapp/screens/job_category_screen.dart';
 import 'package:fireapp/screens/job_details_screen.dart';
 import 'package:fireapp/screens/job_list_screen.dart';

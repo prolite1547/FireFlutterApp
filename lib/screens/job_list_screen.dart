@@ -1,8 +1,10 @@
 import 'package:fireapp/main.dart';
 import 'package:fireapp/model/firebase_util.dart';
+import 'package:fireapp/model/notif.dart';
 import 'package:fireapp/style.dart';
 import 'package:fireapp/widgets/tab_section.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fireapp/model/job.dart';
 
@@ -16,16 +18,34 @@ class JobListScreen extends StatefulWidget {
 class _JobListScreenState extends State<JobListScreen> {
   final databaseReference = FirebaseDatabase.instance.reference();
   TextEditingController controller = new TextEditingController();
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   // String  filter;
 
   @override
   void initState() {
     super.initState();
+           _firebaseMessaging.configure(
+            onMessage: (Map<String, dynamic> message) {
+              print('on message $message');
+            },
+            onResume: (Map<String, dynamic> message) {
+              print('on resume $message');
+            },
+            onLaunch: (Map<String, dynamic> message) {
+              print('on launch $message');
+            },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
     // controller.addListener(() {
     //   setState(() {
     //     filter = controller.text;
     //   });
     // });
+    // Notif().initializeNotif(context);
   }
 
   @override
@@ -40,13 +60,19 @@ class _JobListScreenState extends State<JobListScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Jobs Corner', style: HeaderTextStyle1,)
+                    Text(
+                      'Jobs Corner',
+                      style: HeaderTextStyle1,
+                    )
                   ],
                 ),
                 decoration: BoxDecoration(color: MidnightBlue),
               ),
               ListTile(
-                title: Text('Job Categories', style: DrawerLabelTextStyle,),
+                title: Text(
+                  'Job Categories',
+                  style: DrawerLabelTextStyle,
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, JobCategoryRoute);
