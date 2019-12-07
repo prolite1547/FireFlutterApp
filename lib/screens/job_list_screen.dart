@@ -7,6 +7,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fireapp/model/job.dart';
+import 'package:launch_review/launch_review.dart'; 
+
 
 class JobListScreen extends StatefulWidget {
   @override
@@ -79,8 +81,9 @@ class _JobListScreenState extends State<JobListScreen> {
                 },
               ),
               ListTile(
-                title: Text('Item 2'),
+                title: Text('Rate & Review this App'),
                 onTap: () {
+                  LaunchReview.launch(androidAppId: "com.deqfivestudios.jobscorner");
                   // Update the state of the app.
                   // ...
                 },
