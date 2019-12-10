@@ -5,6 +5,8 @@ import 'package:fireapp/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+import 'listbuilder.dart';
+
 class TabDetails extends StatefulWidget {
   final TextEditingController txtController;
   final String category;
@@ -20,6 +22,7 @@ class _TabDetailState extends State<TabDetails> {
   TextEditingController txtController;
   String category;
   String filter;
+  AsyncSnapshot snapshots;
   _TabDetailState({this.txtController, this.category});
 
   @override
@@ -49,6 +52,7 @@ class _TabDetailState extends State<TabDetails> {
     return FutureBuilder(
       future: MakeCall().firebaseCalls(databaseReference),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
+        snapshots = snapshot;
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return Center(
@@ -58,31 +62,38 @@ class _TabDetailState extends State<TabDetails> {
             if (snapshot.hasError)
               return Center(child: Text("Snapshot error : ${snapshot.error}"));
             else
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
+              return StatefulListView(snapshot.data.length, listitemBuilder);
+              // return ListView.builder(
+              //   itemCount: snapshot.data.length,
+              //   itemBuilder: listitemBuilder,
+              // );
+        }
+      },
+    );
+  }
+  Widget listitemBuilder(BuildContext context, int index) {
                   Widget card;
                   if (filter == null || filter == "") {
                     if (category == "all") {
-                      card = _card(snapshot, index);
+                      card = _card(snapshots, index);
                     } else { 
-                      if(category == snapshot.data[index].industry.toString().trim().toLowerCase()) {
-                          card = _card(snapshot, index);
+                      if(category == snapshots.data[index].industry.toString().trim().toLowerCase()) {
+                          card = _card(snapshots, index);
                       }else{
                           card = Container();
                       }
                     }
                   } else {
                     if (category == "all") {
-                      if (snapshot.data[index].jobTitle.contains(filter)) {
-                        card = _card(snapshot, index);
+                      if (snapshots.data[index].jobTitle.contains(filter)) {
+                        card = _card(snapshots, index);
                       } else {
                         card = Container();
                       }
                     } else {
-                      if (snapshot.data[index].jobTitle.contains(filter) &&
-                          category == snapshot.data[index].industry.toString().trim().toLowerCase()) {
-                        card = _card(snapshot, index);
+                      if (snapshots.data[index].jobTitle.contains(filter) &&
+                          category == snapshots.data[index].industry.toString().trim().toLowerCase()) {
+                        card = _card(snapshots, index);
                       } else {
                         card = Container();
                       }
@@ -95,13 +106,7 @@ class _TabDetailState extends State<TabDetails> {
                   //     : snapshot.data[index].jobTitle.contains(filter)
                   //         ? _card(snapshot, index)
                   //         : Container();
-                },
-              );
-        }
-      },
-    );
-  }
-
+                }
   Widget _card(AsyncSnapshot snapshot, int index) {
     return Card(
         elevation: 2.5,
