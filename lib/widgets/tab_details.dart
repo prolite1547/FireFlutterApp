@@ -34,6 +34,8 @@ class _TabDetailState extends State<TabDetails> {
            _scrollController.addListener((){ 
                pref.setDouble("position", _scrollController.position.pixels);
           });
+
+        
   }
 
   Future<Null> setPosition() async{
@@ -129,7 +131,7 @@ class _TabDetailState extends State<TabDetails> {
                   //     : snapshot.data[index].jobTitle.contains(filter)
                   //         ? _card(snapshot, index)
                   //         : Container();
-                }
+  }
   Widget _card(AsyncSnapshot snapshot, int index) {
     return Card(
         elevation: 2.5,
