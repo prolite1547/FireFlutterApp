@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:fireapp/model/job.dart';
 import 'package:fireapp/model/job_list.dart';
@@ -8,24 +9,18 @@ import 'package:path_provider/path_provider.dart';
 class MakeCall{
   List<Job> jobListItems = [];
   Directory dir;
+  String contentResponse;
   Future<List<Job>> firebaseCalls(DatabaseReference databaseReference) async{
     JobList jobList;
     DataSnapshot dataSnapshot = await databaseReference.once();
     Map<dynamic,dynamic> jsonResponse = dataSnapshot.value[0];
-    wrtieJson(jsonResponse.toString());
+
     jobList = new JobList.fromJSON(jsonResponse);
     jobListItems.addAll(jobList.jobList);
+    print(jobListItems);
     return jobListItems;
   }
-
-
-  // void writeJsonFile(String content) async{
  
-  //   File file = new File(dir.path+"/"+"jobs.json");
-  //   file.createSync();
-  //   file.writeAsStringSync(content);
-  // }
-
   Future<String> get _localPath async{
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -40,6 +35,17 @@ class MakeCall{
     final file = await _localFile;
     return file.writeAsString('$content');
   }
+
+
+  Future<String> readingJSON() async {
+  try {
+    final file = await _localFile;
+    String contents = await file.readAsString();
+    return contents;
+  } catch (e) {
+    return '{jobs:[]}';
+  }
+}
 
 
 
