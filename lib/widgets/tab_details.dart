@@ -18,7 +18,6 @@ class TabDetails extends StatefulWidget {
 }
 
 class _TabDetailState extends State<TabDetails> {
-  final databaseReference = FirebaseDatabase.instance.reference();
   ScrollController _scrollController;
   TextEditingController txtController;
   String category;
@@ -73,7 +72,7 @@ class _TabDetailState extends State<TabDetails> {
 
   Widget listBuilder() {
     return FutureBuilder(
-      future: MakeCall().firebaseCalls(databaseReference),
+      future: MakeCall().callLocalJson(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         snapshots = snapshot;
         switch (snapshot.connectionState) {
@@ -83,7 +82,7 @@ class _TabDetailState extends State<TabDetails> {
             );
           default:
             if (snapshot.hasError)
-              return Center(child: Text("Snapshot error : ${snapshot.error}"));
+              return Center(child: Text("There was a problem while fetching the data. Kindly check your internet connection and try reload this application.", textAlign:TextAlign.center,));
             else
               // return 
               // StatefulListView(snapshot.data.length, listitemBuilder);

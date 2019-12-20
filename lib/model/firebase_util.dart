@@ -10,16 +10,39 @@ class MakeCall{
   List<Job> jobListItems = [];
   Directory dir;
   String contentResponse;
+  
+  Future<Null> createJsonFile() async{
+    final databaseReference = FirebaseDatabase.instance.reference();
+    DataSnapshot dataSnapshot = await databaseReference.once();
+    Map<dynamic,dynamic> jsonResponse = dataSnapshot.value[0];
+    var jsonString = jsonEncode(jsonResponse);
+    writeJson(jsonString);
+    print("JSON File created....");
+  }
+ 
   Future<List<Job>> firebaseCalls(DatabaseReference databaseReference) async{
     JobList jobList;
     DataSnapshot dataSnapshot = await databaseReference.once();
     Map<dynamic,dynamic> jsonResponse = dataSnapshot.value[0];
+    // var jsonString = jsonEncode(jsonResponse);
+    // writeJson(jsonString);
+     String jsonString = await readingJSON();
+     Map<dynamic,dynamic> jsonRespo = jsonDecode(jsonString);
 
     jobList = new JobList.fromJSON(jsonResponse);
     jobListItems.addAll(jobList.jobList);
-    print(jobListItems);
+   
     return jobListItems;
   }
+
+   Future<List<Job>> callLocalJson() async{
+      JobList jobList;
+      String jsonString = await readingJSON();
+      Map<dynamic,dynamic> jsonResponse = jsonDecode(jsonString);
+      jobList = new JobList.fromJSON(jsonResponse);
+      jobListItems.addAll(jobList.jobList);
+      return jobListItems;
+   }
  
   Future<String> get _localPath async{
     final directory = await getApplicationDocumentsDirectory();
@@ -28,10 +51,10 @@ class MakeCall{
 
   Future<File> get _localFile async{
     final path = await _localPath;
-    return File('$path/jobs.json');
+    return File('$path/jobs3.json');
   }
 
-  Future<File> wrtieJson(String content) async {
+  Future<File> writeJson(String content) async {
     final file = await _localFile;
     return file.writeAsString('$content');
   }
