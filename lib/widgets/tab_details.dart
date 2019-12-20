@@ -4,8 +4,8 @@ import 'package:fireapp/model/job.dart';
 import 'package:fireapp/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'listbuilder.dart';
 
 class TabDetails extends StatefulWidget {
   final TextEditingController txtController;
@@ -19,16 +19,39 @@ class TabDetails extends StatefulWidget {
 
 class _TabDetailState extends State<TabDetails> {
   final databaseReference = FirebaseDatabase.instance.reference();
+  ScrollController _scrollController;
   TextEditingController txtController;
   String category;
   String filter;
   AsyncSnapshot snapshots;
   _TabDetailState({this.txtController, this.category});
 
+  Future<Null> getPosition() async{
+       SharedPreferences pref  = await SharedPreferences.getInstance();
+          _scrollController  = ScrollController(
+            initialScrollOffset: (pref.getDouble("position") ?? 0.0)
+          );
+           _scrollController.addListener((){ 
+               pref.setDouble("position", _scrollController.position.pixels);
+          });
+
+        
+  }
+
+  Future<Null> setPosition() async{
+    SharedPreferences pref  = await SharedPreferences.getInstance();
+    _scrollController  = ScrollController(
+            initialScrollOffset: 0.0
+    );
+    _scrollController.addListener((){ 
+        pref.setDouble("position", _scrollController.position.pixels);
+    });
+  }
+
   @override
   void initState() {
+    setPosition();
     super.initState();
-
     txtController.addListener(() {
       if (this.mounted) {
         setState(() {
@@ -62,11 +85,13 @@ class _TabDetailState extends State<TabDetails> {
             if (snapshot.hasError)
               return Center(child: Text("Snapshot error : ${snapshot.error}"));
             else
-              return StatefulListView(snapshot.data.length, listitemBuilder);
-              // return ListView.builder(
-              //   itemCount: snapshot.data.length,
-              //   itemBuilder: listitemBuilder,
-              // );
+              // return 
+              // StatefulListView(snapshot.data.length, listitemBuilder);
+              return ListView.builder(
+                controller: _scrollController,
+                itemCount: snapshot.data.length,
+                itemBuilder: listitemBuilder,
+              );
         }
       },
     );
@@ -106,7 +131,7 @@ class _TabDetailState extends State<TabDetails> {
                   //     : snapshot.data[index].jobTitle.contains(filter)
                   //         ? _card(snapshot, index)
                   //         : Container();
-                }
+  }
   Widget _card(AsyncSnapshot snapshot, int index) {
     return Card(
         elevation: 2.5,
@@ -189,6 +214,7 @@ class _TabDetailState extends State<TabDetails> {
   
 
   void onTapCard(BuildContext context, Job job) {
+    getPosition();
     Navigator.pushNamed(context, JobDetailsRoute,
         arguments: {"job_detail": job});
   }
